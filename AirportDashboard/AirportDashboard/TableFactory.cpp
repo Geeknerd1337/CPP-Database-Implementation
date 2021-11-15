@@ -10,10 +10,39 @@ unique_ptr<table> TableFactory::CreateTable(string file, string name) {
 	return 0;
 }
 
-void TableFactory::InitializeSchema() {
-    ifstream input_from_file("data/tables_schema.csv");
+void TableFactory::PrintSchemaData() {
+    cout << endl << "-------------------------------------------- " << endl;
+
+    //Double for loop over the vector
+    for (int i = 0; i < schemaData.size(); i++) {
+        vector<string> vec = schemaData.at(i);
+        for (int j = 0; j < vec.size(); j++) {
+            //Lets do a little extra formatting to make sure it looks real nice
+            string s = vec.at(j);
+            if (s.length() < 10) {
+                for (int b = 0; b < (10 - s.length()) + 1; b++) {
+                    s += " ";
+                }
+            }
+
+            if (s.length() >= 10) {
+                s = s.substr(0, 10);
+            }
+
+            cout << "|" << s << "|\t";
+        }
+        cout << endl;
+    }
 
     cout << endl << "-------------------------------------------- " << endl;
+
+}
+
+void TableFactory::InitializeSchema() {
+    //Load the schema file
+    ifstream input_from_file("data/tables_schema.csv");
+
+    //Where we store the line
     string line;
 
     while (getline(input_from_file, line)) {
@@ -26,17 +55,13 @@ void TableFactory::InitializeSchema() {
 
         vector<string> words;
 
+        //Delimit the list of commas to get the words and push them to the words vector
         while (getline(ss, word, ',')) {
 
             words.push_back(word);
-            cout << word << "  ";
         }
-
+        //Push the vector of words to the schema data 2D vecttor
         schemaData.push_back(words);
-        //cout << " --> number of cols : " << words.size() << endl;
-        for (auto c : words) {
-            std::cout << c << ' ';
-        }
-        cout << endl;
+
     }
 }

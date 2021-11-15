@@ -3,8 +3,7 @@
 
 class table {
 public:
-	table();
-	int ID;
+	vector<string> primary_key;
 private:
 	
 };

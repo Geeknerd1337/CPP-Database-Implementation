@@ -10,6 +10,7 @@ int main()
 
     //Initialize the table schema within the factory
     factory.InitializeSchema();
+    factory.PrintSchemaData();
 
     //Prompt user for the input file they wish to load
 	cout << "Welcome to the Airport Dashboard!" << endl;
