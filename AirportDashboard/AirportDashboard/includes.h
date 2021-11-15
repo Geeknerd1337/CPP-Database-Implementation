@@ -13,4 +13,6 @@
 #include <vector>
 #include <iterator>
 
+using namespace std;
+
 #endif

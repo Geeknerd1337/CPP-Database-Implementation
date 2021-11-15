@@ -1,9 +1,13 @@
 
 #include <iostream>
 #include "includes.h"
+#include "TableFactory.h"
 using namespace std;
 int main()
 {
+    //Initialize the table factory
+    TableFactory factory;
+
     //Prompt user for the input file they wish to load
 	cout << "Welcome to the Airport Dashboard!" << endl;
 	cout << "Please Input The File You Wish To Load(fileName.extension):\n";
