@@ -13,6 +13,10 @@ public:
 	/// </summary>
 	TableFactory();
 
+	/// <summary>
+	/// A 2d Vector of strings containing our schema data
+	/// </summary>
+	vector < vector <string >> schemaData;
 
 	/// <summary>
 	/// This will take in a table name and CSV file and create the appropriate table accordingly
@@ -23,6 +27,18 @@ public:
 	/// <param name="name">The name of the table, this is going to be used to figure out what to construct.</param>
 	/// <returns></returns>
 	unique_ptr<table> CreateTable(string file, string name);
+
+	/// <summary>
+	/// Initializes the schema from the schema file and populates the data into a 2D Vector.
+	/// This is being done so we don't have to re-read the file every time we need to get schema information
+	/// TODO: It might be worth it to make this a hash table
+	/// </summary>
+	void InitializeSchema();
+
+	/// <summary>
+	/// A debug print for printing the schema data
+	/// </summary>
+	void PrintSchemaData();
 
 private:
 

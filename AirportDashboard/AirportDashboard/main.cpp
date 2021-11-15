@@ -8,6 +8,9 @@ int main()
     //Initialize the table factory
     TableFactory factory;
 
+    //Initialize the table schema within the factory
+    factory.InitializeSchema();
+
     //Prompt user for the input file they wish to load
 	cout << "Welcome to the Airport Dashboard!" << endl;
 	cout << "Please Input The File You Wish To Load(fileName.extension):\n";
