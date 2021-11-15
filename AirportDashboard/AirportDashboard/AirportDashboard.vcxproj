@@ -139,7 +139,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AirportDashboard.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="table.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="includes.h" />
+    <ClInclude Include="table.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
