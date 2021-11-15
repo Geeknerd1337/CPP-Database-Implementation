@@ -10,6 +10,16 @@ unique_ptr<table> TableFactory::CreateTable(string file, string name) {
 	return 0;
 }
 
+vector<string> TableFactory::FindSchema(string table) {
+    for (int i = 0; i < schemaData.size(); i++) {
+        string t = schemaData.at(i).at(0);
+        if (t.compare(table) == 0) {
+            return schemaData.at(i);
+        }
+    }
+    
+}
+
 void TableFactory::PrintSchemaData() {
     cout << endl << "-------------------------------------------- " << endl;
 

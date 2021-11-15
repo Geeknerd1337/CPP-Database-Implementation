@@ -40,6 +40,13 @@ public:
 	/// </summary>
 	void PrintSchemaData();
 
+	/// <summary>
+	/// This vector will find the appropriate schema 
+	/// </summary>
+	/// <param name="table"></param>
+	/// <returns></returns>
+	vector<string> FindSchema(string table);
+
 private:
 
 };
