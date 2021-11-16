@@ -31,6 +31,12 @@ public:
 	/// </summary>
 	Data data;
 
+	/// <summary>
+	/// This is a generic type which in theory can return any type. You simply call it, then cast to the relevant type, 
+	/// in this case either a string or an integer
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <returns></returns>
 	template<typename T>
 	T GetData();
 

@@ -41,7 +41,8 @@ public:
 	void PrintSchemaData();
 
 	/// <summary>
-	/// This vector will find the appropriate schema 
+	/// This vector will find the appropriate schema, this returns a row from the tables_schema.csv,
+	/// this is what is used to populate columns in rows within a table.
 	/// </summary>
 	/// <param name="table"></param>
 	/// <returns></returns>
