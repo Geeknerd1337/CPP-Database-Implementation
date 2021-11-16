@@ -16,8 +16,23 @@ struct Data {
 /// </summary>
 class DataColumn {
 public:
+	/// <summary>
+	/// Initialize this column with a data type and a data struct, this will be populated with the kind of data needed for our tables.
+	/// </summary>
+	/// <param name="type">The type of data, either a str or an int</param>
+	/// <param name="data">The actual data struct containing the relevant data</param>
+	DataColumn(string type, Data data);
+	/// <summary>
+	/// The data type, either a string or an int
+	/// </summary>
 	string type;
+	/// <summary>
+	/// The struct which holds our data, either a string or an int
+	/// </summary>
 	Data data;
+
+	template<typename T>
+	T GetData();
 
 };
 

@@ -139,11 +139,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DataColumn.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="table.cpp" />
     <ClCompile Include="TableFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DataColumn.h" />
+    <ClInclude Include="DataRow.h" />
     <ClInclude Include="includes.h" />
     <ClInclude Include="table.h" />
     <ClInclude Include="TableFactory.h" />

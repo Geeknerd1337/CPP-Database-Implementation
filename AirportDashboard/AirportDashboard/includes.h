@@ -14,6 +14,7 @@
 #include <iterator>
 
 using namespace std;
-
+#include "DataRow.h"
+#include "DataColumn.h"
 
 #endif
