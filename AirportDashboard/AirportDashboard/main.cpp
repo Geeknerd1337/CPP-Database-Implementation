@@ -7,10 +7,14 @@ int main()
 {
     //Initialize the table factory
     TableFactory factory;
+    Table initTable; 
 
     //Initialize the table schema within the factory
     factory.InitializeSchema();
     factory.PrintSchemaData();
+
+    //File Data going to be streamed into 2D array 
+    vector<vector<string>> fData; 
 
     //Prompt user for the input file they wish to load
 	cout << "Welcome to the Airport Dashboard!" << endl;
@@ -38,12 +42,12 @@ int main()
 
     //A string representing a line of input, used for parsing over the input file
     string inputLine;
+    string tableCSV;
 
     //Loop over the initial schema to load it
     do {
         
         //Strings for the CSV and table name
-        string tableCSV;
         string tableName;
         //Get the current line
         getline(fin, inputLine);
@@ -64,5 +68,37 @@ int main()
         
 
     } while (inputLine != "");
+
+    ifstream fileStream; 
+
+    fileStream.open(tableCSV, ios::in); 
+    
+    string line;
+
+    while (getline(fileStream, line)) 
+    {
+
+        line += ",";
+
+        stringstream ss(line);
+
+        string bits;
+
+        vector<string> data;
+
+        //Delimit the list of commas to get the data and push them to the data vector
+        while (getline(ss, bits, ',')) {
+
+            data.push_back(bits);
+        }
+        //Push the vector of data to the schema data 2D vecttor
+        fData.push_back(data);
+
+    }
+
+    fileStream.close(); 
+
+    initTable(fData); 
+
 }
 

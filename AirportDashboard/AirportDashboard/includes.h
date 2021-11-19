@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <stdio.h>
 #include <sstream>
 #include <cmath>
 #include <stdio.h>
@@ -12,9 +13,13 @@
 #include <algorithm>
 #include <vector>
 #include <iterator>
+#include "DataColumn.h"
+#include "DataRow.h"
+#include "IntChainHash.h"
+#include "IntLinHash.h"
+#include "IntQuadHash.h"
 
 using namespace std;
-#include "DataRow.h"
-#include "DataColumn.h"
+
 
 #endif

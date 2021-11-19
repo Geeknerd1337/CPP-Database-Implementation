@@ -2,11 +2,13 @@
 #include "TableFactory.h"
 #include "table.h"
 
-TableFactory::TableFactory() {
+//TableFactory::TableFactory() {
+//
+//    schemaData; 
+//
+//}
 
-}
-
-unique_ptr<table> TableFactory::CreateTable(string file, string name) {
+unique_ptr<Table> TableFactory::CreateTable(string file, string name) {
 	return 0;
 }
 
@@ -74,4 +76,9 @@ void TableFactory::InitializeSchema() {
         schemaData.push_back(words);
 
     }
+}
+
+vector < vector <string >> TableFactory::GetSchemaData()
+{
+    return this->schemaData; 
 }
