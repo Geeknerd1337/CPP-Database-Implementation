@@ -7,8 +7,9 @@ using namespace std;
 
 
 Table::Table() {
-
+	hashTable = new DataRow[23];
 }
+
 
 
 
@@ -87,7 +88,7 @@ void Table::PrintTable() {
 	for (int i = 0; i < columns.size(); i++) {
 		//Lets do a little extra formatting to make sure it looks real nice
 		string s = columns.at(i).GetTitle();
-		cout << "|" << PadString(s, 10) << "|";
+		cout << "|" << PadString(s, 15) << "|";
 	}
 
 	cout << endl;
@@ -97,12 +98,12 @@ void Table::PrintTable() {
 		for (int k = 0; k < columns.size(); k++) {
 			DataColumn c = columns.at(k);
 			if (c.GetType().compare("str") == 0) {
-				cout << "|" << PadString(d.strs.at(c.GetIndex()), 10) << "|";
+				cout << "|" << PadString(d.strs.at(c.GetIndex()), 15) << "|";
 			}
 
 			if (c.GetType().compare("int") == 0) {
 				string num = to_string(d.ints.at(c.GetIndex()));
-				cout << "|" << PadString(num, 10) << "|";
+				cout << "|" << PadString(num, 15) << "|";
 			}
 		}
 		cout << endl;
@@ -140,12 +141,14 @@ void Table::InitializeTableData(vector<vector<string>> data) {
 
 				//If this columns type is a string, push it to the rows string vector
 				if (type.compare("str") == 0) {
+					row.id = j + 1;
 					row.strs.push_back(item);
 				}
 
 				//Otherwise, if it is an int, push it to the rows integer vector
 				if (type.compare("int") == 0) {
 					int itemInt = stoi(item);
+					row.id = j + 1;
 					row.ints.push_back(itemInt);
 				}
 			}
@@ -155,12 +158,33 @@ void Table::InitializeTableData(vector<vector<string>> data) {
 		if (b) {
 			//Temporarily pushing this to a rows vector. 
 			rows.push_back(row);
+			InsertItem(row);
 		}
 
 	}
 }
 
+int Table::HashFunction(int i) {
+	return i % 23;
+}
 
+void Table::InsertItem(DataRow row) {
+	int index = HashFunction(row.id);
+	int indexesProbed = 0;
+
+	while (indexesProbed < 23) {
+		if (hashTable[index].id == -1) {
+			hashTable[index] = DataRow(row);
+
+			return;
+		}
+
+
+		index = (index + 1) % 23;
+
+		++indexesProbed;
+	}
+}
 
 
 

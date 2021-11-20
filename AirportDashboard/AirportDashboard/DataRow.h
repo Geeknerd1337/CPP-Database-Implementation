@@ -15,8 +15,10 @@ private:
 
 public:
   DataRow();
+  DataRow(const DataRow &src);
   vector<string> strs;
   vector<int> ints;
-
+ 
+  int id;
 
 };

@@ -18,6 +18,8 @@ public:
 	/// </summary>
 	Table(); 
 
+	
+
 	/// <summary>
 	/// This takes in a vector of schema information provided by the table factory. It takes this information, parses it, and adds it to the list of data columns
 	/// this effectively initiates the data bases schema and makes for a real nice way to create the data.
@@ -49,6 +51,11 @@ public:
 	void AddKey(string primary_key);
 	vector<string> GetKey(); 
 
+	int HashFunction(int i);
+
+	void InsertItem( DataRow row);
+
+	
 
 private:
 	/// <summary>
@@ -70,6 +77,11 @@ private:
 	/// </summary>
 	vector<DataColumn> columns;
 	vector<DataRow> rows; 
+
+	DataRow* hashTable;
+
+
+	//MyHashTable index;
 
 	/// <summary>
 	/// This is just the name of the table.
