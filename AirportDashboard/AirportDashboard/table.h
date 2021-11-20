@@ -17,21 +17,31 @@ public:
 	/// Empty constructor
 	/// </summary>
 	Table(); 
+
 	/// <summary>
-	/// This will set the table populated with a 2D vector of its "data" from the CSV file
-	/// </summary>
-	/// <param name="fileData"></param>
-	Table(vector<vector<string>> fileData);
-	
-	/// <summary>
-	/// This table takes in a vector of the databases schema then uses the file data to populate the tables rows with data rows
-	/// It first initiates the schema then populates the data
+	/// This takes in a vector of schema information provided by the table factory. It takes this information, parses it, and adds it to the list of data columns
+	/// this effectively initiates the data bases schema and makes for a real nice way to create the data.
 	/// </summary>
 	/// <param name="schema"></param>
-	void PopulateTable(vector<string> schema);
+	void InitializeTableSchema(vector<string> schema);
 
+	/// <summary>
+	/// This function takes in a 2d vector of strings then uses them to populate
+	/// </summary>
+	/// <param name="data"></param>
+	void InitializeTableData(vector<vector<string>> data);
 
-	vector<vector<string>> GetFileData();
+	/// <summary>
+	/// This will print the table's contents in a tabular format, should be extremely simple to do.
+	/// </summary>
+	void PrintTable();
+
+	/// <summary>
+	/// This function will return a string thats either padded with extra spaces or cut short depending on a given value
+	/// </summary>
+	/// <param name="s"></param>
+	/// <returns></returns>
+	string PadString(string s, int i);
 
 	vector<DataColumn> GetCols(); 
 	vector<DataRow> GetRows(); 
@@ -58,7 +68,7 @@ private:
 	/// <summary>
 	/// This is a vector representing our database schema, it represents what our columns are and where in the relevant arrays within our data rows they exist
 	/// </summary>
-	vector<DataColumn> cols;
+	vector<DataColumn> columns;
 	vector<DataRow> rows; 
 
 	/// <summary>
@@ -66,6 +76,6 @@ private:
 	/// </summary>
 	string title;
 
-	vector<vector<string>> fileData; 
+
 
 };

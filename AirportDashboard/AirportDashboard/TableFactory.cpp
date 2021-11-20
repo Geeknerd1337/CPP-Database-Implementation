@@ -14,9 +14,13 @@ vector<string> TableFactory::FindSchema(string table) {
 }
 
 
-void TableFactory::TableDebug(string tableName, string file) {
+Table TableFactory::CreateTable(string tableName, string file) {
     Table t;
-    t.PopulateTable(FindSchema(tableName));
+    t.InitializeTableSchema(FindSchema(tableName));
+    t.InitializeTableData(GetTableDataFromFile("data/" + file));
+
+
+    return t;
 }
 
 
@@ -30,16 +34,14 @@ void TableFactory::PrintSchemaData() {
             //Lets do a little extra formatting to make sure it looks real nice
             string s = vec.at(j);
             if (s.length() < 10) {
-                for (int b = 0; b < (10 - s.length()) + 1; b++) {
-                    s += " ";
-                }
+                s.append(10 - s.length(), ' ');
             }
 
-            if (s.length() >= 10) {
+            if (s.length() > 9) {
                 s = s.substr(0, 10);
             }
 
-            cout << "|" << s << "|\t";
+            cout << "|" << s << "| \t";
         }
         cout << endl;
     }
@@ -77,7 +79,39 @@ void TableFactory::InitializeSchema() {
     }
 }
 
-vector < vector <string >> TableFactory::GetSchemaData()
-{
-    return this->schemaData; 
+vector<vector<string>> TableFactory::GetTableDataFromFile(string file) {
+    vector<vector<string>> data;
+    
+    //Load the input file
+    ifstream input_from_file(file);
+
+    //Where we store the line
+    string line;
+
+    while (getline(input_from_file, line)) {
+
+        line += ",";
+
+        stringstream ss(line);
+
+        string word;
+
+        vector<string> words;
+
+        //Delimit the list of commas to get the words and push them to the words vector
+        while (getline(ss, word, ',')) {
+            if (word != "") {
+                words.push_back(word);
+            }
+            else {
+                words.push_back("NULL");
+            }
+        }
+        //Push the vector of words to the schema data 2D vecttor
+        data.push_back(words);
+
+    }
+
+    return data;
+
 }

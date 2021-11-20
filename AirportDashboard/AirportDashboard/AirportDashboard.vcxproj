@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DataColumn.cpp" />
+    <ClCompile Include="DataRow.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="table.cpp" />
     <ClCompile Include="TableFactory.cpp" />

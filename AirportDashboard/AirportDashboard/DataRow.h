@@ -10,16 +10,13 @@ class DataRow
 {
 
 private:
-	vector<string> sData;
-	vector<int> iData;
+	
 
 
 public:
   DataRow();
+  vector<string> strs;
+  vector<int> ints;
 
-  void sPop(/*vector<string> sData*/);
-  void iPop(/*vector<int> iData*/);
-  
-  void PushData(); 
 
 };

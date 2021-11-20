@@ -27,7 +27,7 @@ public:
 	/// <param name="file">The CSV file for the table's schema</param>
 	/// <param name="name">The name of the table, this is going to be used to figure out what to construct.</param>
 	/// <returns></returns>
-	//unique_ptr<Table> CreateTable(string file, string name);
+	Table CreateTable(string tableName, string file);
 
 	/// <summary>
 	/// Initializes the schema from the schema file and populates the data into a 2D Vector.
@@ -49,9 +49,13 @@ public:
 	/// <returns></returns>
 	vector<string> FindSchema(string table);
 
-	void TableDebug(string tableName, string file);
-
-	vector < vector <string >> GetSchemaData(); 
+	
+	/// <summary>
+	/// All this does is return the data from a table CSV file as a 2D vector which tables can use to populate their data. 
+	/// </summary>
+	/// <param name="file"></param>
+	/// <returns></returns>
+	vector<vector<string>> GetTableDataFromFile(string file);
 
 private:
 
