@@ -6,27 +6,33 @@
 /// This is a class which holds a vector of data rows and a vector for the primary key.
 /// TODO: Create a third vector of columns with empty data which is used as a template when populating the rows.
 /// </summary>
-class Table : public TableFactory{
+class Table{
 public:
-	/// <summary>
-	/// This is a function which every derived class from table will implement. Each derived table may use a different hashing
-	/// type, and thus will store each piece of data differently, but will ultimately be accessed in the same way.
-	/// TODO: Move this function to the data row class
-	/// </summary>
-	/// <param name="d">The data we want to populate into a givn column</param>
-	virtual void PushData();
 
-	//Table(vector<DataRow> rows);
+	/// <summary>
+	/// Empty constructor
+	/// </summary>
 	Table(); 
-	Table(vector<vector<string>> fData);
-	//Table(vector<DataColumn> cols); 
+	/// <summary>
+	/// This will set the table populated with a 2D vector of its "data" from the CSV file
+	/// </summary>
+	/// <param name="fileData"></param>
+	Table(vector<vector<string>> fileData);
+	
+	/// <summary>
+	/// This table takes in a vector of the databases schema then uses the file data to populate the tables rows with data rows
+	/// It first initiates the schema then populates the data
+	/// </summary>
+	/// <param name="schema"></param>
+	void PopulateTable(vector<string> schema);
+
 
 	vector<vector<string>> GetFileData();
 
 	vector<DataColumn> GetCols(); 
 	vector<DataRow> GetRows(); 
 	
-	void SetKey(string primary_key);
+	void AddKey(string primary_key);
 	vector<string> GetKey(); 
 
 
@@ -46,13 +52,10 @@ private:
 	/// </summary>
 	vector<string> primary_key;
 	/// <summary>
-	/// This is a vector containing our data rows and is what gets accessed for insertions, deletions, and updates.
+	/// This is a vector representing our database schema, it represents what our columns are and where in the relevant arrays within our data rows they exist
 	/// </summary>
 	vector<DataColumn> cols;
 	vector<DataRow> rows; 
-	IntChainHash chRow;
-	IntLinHash lhRow;
-	IntQuadHash qhRow;
 
 	vector<vector<string>> fileData; 
 

@@ -2,11 +2,7 @@
 #include "TableFactory.h"
 #include "table.h"
 
-//TableFactory::TableFactory() {
-//
-//    schemaData; 
-//
-//}
+
 
 unique_ptr<Table> TableFactory::CreateTable(string file, string name) {
 	return 0;

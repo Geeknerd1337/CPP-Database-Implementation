@@ -2,14 +2,6 @@
 #include "includes.h"
 #include "Table.h"
 
-/// <summary>
-/// This is a struct which defines the data that a column can hold. It has both a string and an integer.
-/// </summary>
-struct Data 
-{
-	int i;
-	string s;
-};
 
 /// <summary>
 /// This class is what gets stored into rows and contains a data type and a piece of data.
@@ -20,22 +12,17 @@ class DataColumn : public Table
 {
 public:
 
-	//DataColumn();
 	/// <summary>
-	/// Initialize this column with a data type and a data struct, this will be populated with the kind of data needed for our tables.
+	/// Data columns are nothing more than a way to define database schema
 	/// </summary>
-	/// <param name="type">The type of data, either a str or an int</param>
-	/// <param name="data">The actual data struct containing the relevant data</param>
-	DataColumn(string type, Data data);
-	DataColumn(); 
-
-	//TODO: some addRow function here
+	/// <param name="type"></param>
+	/// <param name="title"></param>
+	/// <param name="index"></param>
+	DataColumn(string type, string title, int index);
 
 	void SetIndex(int index);
 	int GetIndex();
 
-	void SetData(Data data);
-	Data GetData();
 
 	void SetTitle(string title);
 	string GetTitle(); 
@@ -43,32 +30,9 @@ public:
 	void SetType(string type); 
 	string GetType(); 
 
-	void PushData(); 
-
-	void ColPop();
-
-	/// <summary>
-	// /// The data type, either a string or an int
-	// /// </summary>
-	// string type;
-	// /// <summary>
-	// /// The struct which holds our data, either a string or an int
-	// /// </summary>
-	// Data data;
-	//
-	// /// <summary>
-	/// This is a generic type which in theory can return any type. You simply call it, then cast to the relevant type,
-	/// in this case either a string or an integer
-	/// </summary>
-	/// <typeparam name="T"></typeparam>
-	/// <returns></returns>
-	//template<typename T>;
-	//T GetData();
 
 private:
 	string type;
 	string title;
 	int index;
-	Data data;
-	//template<typename T>;
 }; 
