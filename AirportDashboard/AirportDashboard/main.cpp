@@ -65,6 +65,7 @@ int main()
         //Print it out as a debug thing for now
         cout << "'" << tableCSV << "'\t\t\t'" << tableName << "'" << endl;
 
+        factory.TableDebug(tableName, tableCSV);
         
 
     } while (inputLine != "");
@@ -98,7 +99,7 @@ int main()
 
     fileStream.close(); 
 
-    initTable(fData); 
+
 
 }
 

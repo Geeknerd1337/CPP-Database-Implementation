@@ -3,11 +3,6 @@
 #include "table.h"
 
 
-
-unique_ptr<Table> TableFactory::CreateTable(string file, string name) {
-	return 0;
-}
-
 vector<string> TableFactory::FindSchema(string table) {
     for (int i = 0; i < schemaData.size(); i++) {
         string t = schemaData.at(i).at(0);
@@ -17,6 +12,13 @@ vector<string> TableFactory::FindSchema(string table) {
     }
     
 }
+
+
+void TableFactory::TableDebug(string tableName, string file) {
+    Table t;
+    t.PopulateTable(FindSchema(tableName));
+}
+
 
 void TableFactory::PrintSchemaData() {
     cout << endl << "-------------------------------------------- " << endl;
@@ -65,8 +67,9 @@ void TableFactory::InitializeSchema() {
 
         //Delimit the list of commas to get the words and push them to the words vector
         while (getline(ss, word, ',')) {
-
-            words.push_back(word);
+            if (word != "") {
+                words.push_back(word);
+            }
         }
         //Push the vector of words to the schema data 2D vecttor
         schemaData.push_back(words);

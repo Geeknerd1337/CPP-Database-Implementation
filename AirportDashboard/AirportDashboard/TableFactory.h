@@ -2,6 +2,7 @@
 #include "table.h"
 
 
+
 /// <summary>
 /// This is going to use a programming pattern called the factory pattern
 /// Basically, what this is is we will use it to create out objects and initialize schema.
@@ -26,7 +27,7 @@ public:
 	/// <param name="file">The CSV file for the table's schema</param>
 	/// <param name="name">The name of the table, this is going to be used to figure out what to construct.</param>
 	/// <returns></returns>
-	unique_ptr<Table> CreateTable(string file, string name);
+	//unique_ptr<Table> CreateTable(string file, string name);
 
 	/// <summary>
 	/// Initializes the schema from the schema file and populates the data into a 2D Vector.
@@ -47,6 +48,8 @@ public:
 	/// <param name="table"></param>
 	/// <returns></returns>
 	vector<string> FindSchema(string table);
+
+	void TableDebug(string tableName, string file);
 
 	vector < vector <string >> GetSchemaData(); 
 

@@ -1,14 +1,14 @@
-#pragma once
-#include "includes.h"
-#include "Table.h"
+#ifndef DATACOLUMN_H
+#define DATACOLUMN_H
 
+#include "includes.h"
 
 /// <summary>
 /// This class is what gets stored into rows and contains a data type and a piece of data.
 ///  Since, as per Dr. Shirvani's specifications, the only kind of data types we will need are ints and
 /// strings, we can store the data as a string and cast to integer whenever we get the data.
 /// </summary>
-class DataColumn : public Table 
+class DataColumn 
 {
 public:
 
@@ -36,3 +36,5 @@ private:
 	string title;
 	int index;
 }; 
+
+#endif

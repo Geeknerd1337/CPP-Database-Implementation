@@ -1,6 +1,10 @@
 ﻿#pragma once
 #include "includes.h"
-#include "TableFactory.h"
+//#include "TableFactory.h"
+#include "DataRow.h"
+#include "DataColumn.h"
+
+
 
 /// <summary>
 /// This is a class which holds a vector of data rows and a vector for the primary key.
@@ -56,6 +60,11 @@ private:
 	/// </summary>
 	vector<DataColumn> cols;
 	vector<DataRow> rows; 
+
+	/// <summary>
+	/// This is just the name of the table.
+	/// </summary>
+	string title;
 
 	vector<vector<string>> fileData; 
 
