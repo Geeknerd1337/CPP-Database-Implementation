@@ -1,7 +1,7 @@
 # CPP-Database-Implementation
 # Airport Dashboard
  ## System Diagram
- [!Airpot.png]
+ ![System Diagram](https://github.com/Geeknerd1337/CPP-Database-Implementation/blob/[main]/Airport.png?raw=true)
  ## Milestone 1
  
  ## Milestone 2
