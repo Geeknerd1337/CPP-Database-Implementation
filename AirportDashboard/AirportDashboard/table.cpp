@@ -117,20 +117,23 @@ void Table::PrintTable() {
 
 	cout << endl;
 
-	for (int j = 0; j < rows.size(); j++) {
-		DataRow d = rows.at(j);
-		for (int k = 0; k < columns.size(); k++) {
-			DataColumn c = columns.at(k);
-			if (c.GetType().compare("str") == 0) {
-				cout << "|" << PadString(d.strs.at(c.GetIndex()), 15) << "|";
-			}
+	for (int j = 0; j < 23; j++) {
+		int index = HashFunction(j);
+		DataRow d = hashTable[index];
+		if (d.id != -1) {
+			for (int k = 0; k < columns.size(); k++) {
+				DataColumn c = columns.at(k);
+				if (c.GetType().compare("str") == 0) {
+					cout << "|" << PadString(d.strs.at(c.GetIndex()), 15) << "|";
+				}
 
-			if (c.GetType().compare("int") == 0) {
-				string num = to_string(d.ints.at(c.GetIndex()));
-				cout << "|" << PadString(num, 15) << "|";
+				if (c.GetType().compare("int") == 0) {
+					string num = to_string(d.ints.at(c.GetIndex()));
+					cout << "|" << PadString(num, 15) << "|";
+				}
 			}
+			cout << endl;
 		}
-		cout << endl;
 
 	}
 
@@ -187,6 +190,7 @@ void Table::InitializeTableData(vector<vector<string>> data) {
 		//If the row we want to push isn't empty.
 		if (b) {
 			//Temporarily pushing this to a rows vector. 
+			row.id = i;
 			rows.push_back(row);
 			InsertItem(row);
 		}
@@ -215,20 +219,20 @@ void Table::InsertItem(DataRow row) {
 
 void Table::DeleteItem(DataRow row)
 {
-	int index = HashFunction(row.id);
-	int probed = 0;
-
-	while (probed < 23)
-	{
-		if (hashTable[index].id == -1)
-		{
-			hashTable[index] = DataRow();
+	
+	for (int i = 0; i < 23; i++) {
+		DataRow d1 = hashTable[i];
+		if (d1.id == row.id) {
+			DataRow d;
+			d.id = -1;
+			hashTable[i] = d;
 			return;
+
 		}
-
-		probed++;
-
 	}
+	
+	
+	return;
 }
 
 vector<DataColumn> Table::GetCols()
@@ -253,36 +257,38 @@ vector<string> Table::GetKey()
 
 int Table::KeyExists(vector<string> vals) {
 	int match_count = 0;
-	for (int i = 0;i < rows.size();i++)
+	for (int i = 0;i < 23;i++)
 	{
-		DataRow d = rows.at(i);
+		DataRow d = hashTable[i];
 
-		for (int j = 0; j < primary_key.size(); j++) {
-			for (int k = 0; k < columns.size(); k++) {
-				DataColumn c = columns.at(k);
-				if (c.GetType().compare("str") == 0) {
-					if (d.strs.at(c.GetIndex()) == vals.at(j))
-					{
-						match_count++;
+		if (d.id > -1) {
+			for (int j = 0; j < primary_key.size(); j++) {
+				for (int k = 0; k < columns.size(); k++) {
+					DataColumn c = columns.at(k);
+					if (c.GetType().compare("str") == 0) {
+						if (d.strs.at(c.GetIndex()).compare(vals.at(j)) == 0)
+						{
+							match_count++;
+						}
 					}
-				}
 
-				if (c.GetType().compare("int") == 0) {
-					string num = to_string(d.ints.at(c.GetIndex()));
-					if (num == vals.at(j))
-					{
-						match_count++;
+					if (c.GetType().compare("int") == 0) {
+						string num = to_string(d.ints.at(c.GetIndex()));
+						if (num == vals.at(j))
+						{
+							match_count++;
+						}
 					}
 				}
 			}
-		}
-		if (match_count < primary_key.size())
-		{
-			match_count = 0;
-		}
-		else
-		{
-			return i;
+			if (match_count < primary_key.size())
+			{
+				match_count = 0;
+			}
+			else
+			{
+				return i;
+			}
 		}
 	}
 	return -1;
@@ -485,8 +491,18 @@ void Table::INSERT(string inputLine, string table)
 		}
 	}
 
+	int maxId = -1;
+	for (int i = 0; i < 23; i++) {
+		DataRow desired = hashTable[i];
+		if (desired.id > maxId) {
+			maxId = desired.id;
+		}
+
+	}
+
 	if (count == columns.size())
 	{
+		row.id = maxId + 1;
 		rows.push_back(row);
 		InsertItem(row);
 		string filename = "data\\DATA_" + table + ".CSV";
@@ -547,11 +563,47 @@ void Table::UPDATE(string inputLine, string table)
 
 	if (row_id > -1)
 	{
+		//for (int i = 0; i < columns.size(); i++)
+		//{
+		//	DataColumn d = columns.at(i);
+		//	//Get that data columns type
+		//	string type = d.GetType();
+
+		//	string item;
+		//	//Get the invidual item in the row
+		//	if (i < colvals.size())
+		//	{
+		//		item = colvals.at(i);
+		//	}
+		//	else
+		//	{
+		//		item = "-1";
+		//	}
+
+		//	//If this columns type is a string, push it to the rows string vector
+		//	if (type.compare("str") == 0) {
+		//		row.id = row_id;
+		//		row.strs.push_back(item);
+		//		count++;
+		//	}
+
+		//	//Otherwise, if it is an int, push it to the rows integer vector
+		//	if (type.compare("int") == 0) {
+		//		int itemInt = stoi(item);
+		//		row.id = row_id;
+		//		row.ints.push_back(itemInt);
+		//		count++;
+		//	}
+		//}
+
 		for (int i = 0; i < columns.size(); i++)
 		{
 			DataColumn d = columns.at(i);
 			//Get that data columns type
 			string type = d.GetType();
+
+			DataRow targetRow = hashTable[row_id];
+
 
 			string item;
 			//Get the invidual item in the row
@@ -566,23 +618,21 @@ void Table::UPDATE(string inputLine, string table)
 
 			//If this columns type is a string, push it to the rows string vector
 			if (type.compare("str") == 0) {
-				row.id = row_id;
-				row.strs.push_back(item);
+				hashTable[row_id].strs.at(d.GetIndex()) = item;
 				count++;
 			}
 
 			//Otherwise, if it is an int, push it to the rows integer vector
 			if (type.compare("int") == 0) {
 				int itemInt = stoi(item);
-				row.id = row_id;
-				row.ints.push_back(itemInt);
+				hashTable[row_id].ints.at(d.GetIndex()) = itemInt;
 				count++;
 			}
 		}
 
 		if (count == columns.size())
 		{
-			InsertItem(row);
+			//InsertItem(row);
 			string filename = "data\\DATA_" + table + ".CSV";
 			UpdateCsv(filename, colvals, row_id);
 			AlertMessage(table, inputLine, "\nRow Updated successfully\n");
@@ -631,7 +681,7 @@ void Table::SELECT(string values, string table)
 		{
 			match_found = true;
 			int row_id = selectedrows.back();
-			PrintTableRow(row_id);
+			PrintTableRow(HashFunction(row_id));
 			selectedrows.pop_back();
 		}
 	}
@@ -687,61 +737,54 @@ void Table::DELETE(string inputLine, string table)
 		colvals.push_back("");
 	}
 
-	if (KeyExists(colvals) > -1)
-	{
-		AlertMessage(table, inputLine, "\nEntered key already exists in the table\n");
-
-		return;
-
-		/*cout << "\nEntered key already exists in the table\n";
-		cout << "Key: \t";
-		for (int c = 0;c < colvals.size(); c++)
-		{
-			cout << colvals.at(c)<<"\t";
-		}*/
-	}
-
 
 	//string filtervalue = values.substr(values.find_last_of(",") + 1, values.find_last_of(")") - 1 - values.find_last_of(","));
 
 	bool match_found = false;
 
-
+	
 	vector<int> selectedrows;
-	for (int i = 0; i < rows.size(); i++)
+	for (int i = 0; i < 23; i++)
 	{
-		DataRow d = rows.at(i);
-		bool foundIntValue = false;
-		bool foundStrValue = false;
+		int hashIndex = HashFunction(i);
+		DataRow d = hashTable[i];
+
+
+		int matchedColumns = 0;
+		
 		for (int j = 0; j < colvals.size(); j++)
 		{
 
 			string value = colvals.at(j);
+			bool columnMatch = false;
 
 			for (int s = 0; s < d.strs.size(); s++) {
 				if (d.strs.at(s).compare(value) == 0) {
-					foundStrValue = true;
+					matchedColumns++;
 				}
 			}
 
 			for (int s = 0; s < d.ints.size(); s++) {
 				if (to_string(d.ints.at(s)).compare(value) == 0) {
-					foundIntValue = true;
+					matchedColumns++;
 				}
 			}
 		}
 
-		if (!foundIntValue && !foundStrValue) {
-			return;
-		}
-		else {
+		if (matchedColumns == colvals.size()) {
 			selectedrows.push_back(i);
 		}
+
+		
+	}
+
+	if (selectedrows.size() <= 0) {
+		return;
 	}
 
 	for (int i = 0; i < selectedrows.size(); i++)
 	{
-		DeleteItem(rows[selectedrows.at(i)]);
+		DeleteItem(hashTable[selectedrows.at(i)]);
 	}
 
 	if (selectedrows.size() > 0)
@@ -751,7 +794,6 @@ void Table::DELETE(string inputLine, string table)
 		{
 			match_found = true;
 			int row_id = selectedrows.back();
-			PrintTableRow(row_id);
 			selectedrows.pop_back();
 		}
 	}
@@ -763,7 +805,7 @@ void Table::DELETE(string inputLine, string table)
 
 	else
 	{
-		AlertMessage(table, inputLine, "\nColumns mismatched\n");
+		//AlertMessage(table, inputLine, "\nColumns mismatched\n");
 	}
 
 	cout << "After: \n" << endl;

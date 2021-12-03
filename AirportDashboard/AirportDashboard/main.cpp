@@ -187,7 +187,7 @@ int main()
             if (command == "DELETE")
             {
                 //check table exists or not
-                int tableidx = find_table(tables, tableName);
+                 int tableidx = find_table(tables, tableName);
 
                 if (tableidx != -1)
                 {
