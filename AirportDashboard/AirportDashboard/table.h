@@ -54,6 +54,7 @@ public:
 	int HashFunction(int i);
 
 	void InsertItem( DataRow row);
+	void DeleteItem(DataRow row);
 
 	string GetTitle();
 
@@ -115,6 +116,14 @@ public:
 	/// <returns></returns>
 	void INSERT(string, string);
 	
+	/// <summary>
+/// Perform DELETE operation as per the description provided in the documentation
+/// </summary>
+/// <param name="inputLine"></param>
+/// <param name="table"></param>
+/// <returns></returns>
+	void DELETE(string inputLine, string table); 
+
 	/// <summary>
 	/// Print a message on the CLI
 	/// </summary>

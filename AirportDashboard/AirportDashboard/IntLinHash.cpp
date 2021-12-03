@@ -1,4 +1,4 @@
-#include "IntLinHash.h";
+#include "IntLinHash.h"
 
 
 /// <summary>

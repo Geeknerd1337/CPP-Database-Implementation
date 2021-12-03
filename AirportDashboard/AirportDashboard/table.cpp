@@ -18,16 +18,26 @@ string Table::GetTitle()
 
 
 void Table::InitializeTableSchema(vector<string> schema) {
+
+	//vector<string> schemaT = schema; 
+
 	//Keep two integers for the indices in the vectors on the data row class
 	int strIndex = 0;
 	int intIndex = 0;
-
+	//cout << "INIT SCHEMA TEST" << endl; 
 	//First, we are going to go over the schema, create a data column and push it to our column vectors.
 	//The reason we don't need to make this a pointer or worry about the new key word is push_back on vector
 	//Will create copy automatically. We also add these to our primary key.
+
+	//std::cout << "T0" << endl;
+
 	for (int i = 0; i < schema.size(); i++) {
 		//Store the current piece of 'schema' into a temporary string
-		string str = schema[i];
+		string str = schema.at(i); //****
+
+		//std::cout << "T1" << endl; 
+
+
 
 		//Since the first item in the schema vector is the tables title, we can just set it based on the incoming vector
 		if (i == 0) {
@@ -47,6 +57,10 @@ void Table::InitializeTableSchema(vector<string> schema) {
 
 			//This is basically how we find if this row is a primary key or not, extremely simple way to check and we're just adding it to our primary key vector
 			if (str.find(":k:") != -1) {
+
+				//std::cout << "T2" << endl;
+
+
 				primary_key.push_back(title);
 			}
 
@@ -56,14 +70,18 @@ void Table::InitializeTableSchema(vector<string> schema) {
 			//If our type is a string, increment the str index
 			if (type.compare("str") == 0) {
 				//cout << "COLUMN TITLE: '" << title << "' COLUMN TYPE: '" << type << "'" << "\tSTR INDEX: " << strIndex << endl;
+				//std::cout << "T3" << endl;
+
 				DataColumn d(type, title, strIndex);
 				columns.push_back(d);
 				strIndex++;
 			}
-
+			//
 			//If our type is an int, increment the integer index
 			if (type.compare("int") == 0) {
 				//cout << "COLUMN TITLE: '" << title << "' COLUMN TYPE: '" << type << "'" << "\tINT INDEX: " << intIndex << endl;
+				//std::cout << "T4" << endl;
+
 				DataColumn d(type, title, intIndex);
 				columns.push_back(d);
 				intIndex++;
@@ -71,6 +89,8 @@ void Table::InitializeTableSchema(vector<string> schema) {
 		}
 
 	}
+
+	//cout << "END INIT SCHEMA TEST" << endl; 
 }
 
 string Table::PadString(string s, int i) {
@@ -118,11 +138,17 @@ void Table::PrintTable() {
 }
 
 void Table::InitializeTableData(vector<vector<string>> data) {
+
+	//cout << "uhhhhhhh" << endl; 
+
 	//First we iterate through the given data file
 	for (int i = 0; i < data.size(); i++) {
 		//Then we loop over the inviddual items in the columns
 		//Instantiate a data row
 		DataRow row;
+
+		//cout << "22222222uhhhhhhh" << endl;
+
 
 		//A temporary variable for if we can push or not
 		bool b = false;
@@ -187,7 +213,23 @@ void Table::InsertItem(DataRow row) {
 	}
 }
 
+void Table::DeleteItem(DataRow row)
+{
+	int index = HashFunction(row.id);
+	int probed = 0;
 
+	while (probed < 23)
+	{
+		if (hashTable[index].id == -1)
+		{
+			hashTable[index] = DataRow();
+			return;
+		}
+
+		probed++;
+
+	}
+}
 
 vector<DataColumn> Table::GetCols()
 {
@@ -597,4 +639,135 @@ void Table::SELECT(string values, string table)
 	{
 		AlertMessage(table, values, "No match found");
 	}
+}
+
+void Table::DELETE(string inputLine, string table)
+{
+	cout << "Before: \n" << endl; 
+	PrintTable(); 
+
+	string values = inputLine.substr(inputLine.find("(") + 2, inputLine.find_last_of(",") - inputLine.find("(") - 3);
+	//cout << "\nInserting data to " << table;
+	values += ",";
+
+	stringstream ss(values);
+
+	string colval;
+	string filtervalue;
+
+	vector<string> colvals;
+
+	DataRow row;
+
+	//to keep count of number of col values.
+	int count = 0;
+
+	//A temporary variable for if we can insert or not
+	bool b = false;
+
+	//Delimit the list of commas to get the words and push them to the words vector
+	while (getline(ss, colval, ',')) {
+		if (colval != "") {
+			colvals.push_back(colval);
+		}
+		else {
+			colvals.push_back("-1");
+		}
+	}
+
+	//if colvals more than columns then terminate insert
+	if (colvals.size() > columns.size())
+	{
+		AlertMessage(table, inputLine, "\nprovided # of column values is greater than number of columns of table");
+		return;
+	}
+
+	while (colvals.size() < columns.size())
+	{
+		colvals.push_back("");
+	}
+
+	if (KeyExists(colvals) > -1)
+	{
+		AlertMessage(table, inputLine, "\nEntered key already exists in the table\n");
+
+		return;
+
+		/*cout << "\nEntered key already exists in the table\n";
+		cout << "Key: \t";
+		for (int c = 0;c < colvals.size(); c++)
+		{
+			cout << colvals.at(c)<<"\t";
+		}*/
+	}
+
+
+	//string filtervalue = values.substr(values.find_last_of(",") + 1, values.find_last_of(")") - 1 - values.find_last_of(","));
+
+	bool match_found = false;
+
+
+	vector<int> selectedrows;
+	for (int i = 0; i < rows.size(); i++)
+	{
+		DataRow d = rows.at(i);
+		bool foundIntValue = false;
+		bool foundStrValue = false;
+		for (int j = 0; j < colvals.size(); j++)
+		{
+
+			string value = colvals.at(j);
+
+			for (int s = 0; s < d.strs.size(); s++) {
+				if (d.strs.at(s).compare(value) == 0) {
+					foundStrValue = true;
+				}
+			}
+
+			for (int s = 0; s < d.ints.size(); s++) {
+				if (to_string(d.ints.at(s)).compare(value) == 0) {
+					foundIntValue = true;
+				}
+			}
+		}
+
+		if (!foundIntValue && !foundStrValue) {
+			return;
+		}
+		else {
+			selectedrows.push_back(i);
+		}
+	}
+
+	for (int i = 0; i < selectedrows.size(); i++)
+	{
+		DeleteItem(rows[selectedrows.at(i)]);
+	}
+
+	if (selectedrows.size() > 0)
+	{
+		AlertMessage(table, values, "Following rows matched");
+		while (!selectedrows.empty())
+		{
+			match_found = true;
+			int row_id = selectedrows.back();
+			PrintTableRow(row_id);
+			selectedrows.pop_back();
+		}
+	}
+	if (!match_found)
+	{
+		AlertMessage(table, values, "No match found");
+	}
+
+
+	else
+	{
+		AlertMessage(table, inputLine, "\nColumns mismatched\n");
+	}
+
+	cout << "After: \n" << endl;
+	PrintTable();
+
+	return;
 }

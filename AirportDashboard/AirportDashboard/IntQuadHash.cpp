@@ -1,4 +1,4 @@
-#include "IntQuadHash.h";
+#include "IntQuadHash.h"
 
 
 /// <summary>

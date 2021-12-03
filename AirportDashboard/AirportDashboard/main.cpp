@@ -77,9 +77,9 @@ int main()
         //Print it out as a debug thing for now
         cout << "'" << tableCSV << "'\t\t\t'" << tableName << "'" << endl;
 
-        tables.push_back(factory.CreateTable(tableName, tableCSV));
+        tables.push_back(factory.CreateTable(tableName, tableCSV)); ///***
         
-
+        //cout << "UHHHH" << endl; 
     } while (inputLine != "");
 
     getline(fin, inputLine);
@@ -184,10 +184,38 @@ int main()
                 cout << "\n---------------------------------------------\n";
 
             }
+            if (command == "DELETE")
+            {
+                //check table exists or not
+                int tableidx = find_table(tables, tableName);
+
+                if (tableidx != -1)
+                {
+                    Table temp = tables.at(tableidx);
+                    DataRow row;
+
+                    //get table title
+                    cout << "\n" << temp.GetTitle() << "\n";
+
+                    //execute DELETE command
+                    tables.at(tableidx).DELETE(inputLine, tableName);
+                }
+                else
+                {
+                    cout << "Table: " << tableName << endl;
+                    cout << inputLine;
+                    cout << "\ntable not found in Database!\n";
+                }
+                command = "";
+                cout << "\n---------------------------------------------\n";
+
+            }
         }
     } while (inputLine != "WRITE()");//these commands are to be implement in the final submission sprint.
 
     
     fin.close();
+
+    return 0; 
 }
 

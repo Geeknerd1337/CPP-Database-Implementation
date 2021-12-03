@@ -1,3 +1,5 @@
+#ifndef HASHINGTABLES_H
+#define HASHINGTABLES_H
 
 #include "IntChainHash.h"
 #include "IntLinHash.h"
@@ -81,7 +83,7 @@ void DisplayIntQuadHash() {
     cout << "---------------------------------\n";
 }
 
-int main()
+int main2()
 {
     DisplayIntChainHash();
     cout << "\n\n\n" << endl;
@@ -92,4 +94,4 @@ int main()
 }
 
 
-
+#endif
