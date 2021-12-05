@@ -1,7 +1,12 @@
 #include "DataColumn.h"
 #include "table.h"
 
-
+DataColumn::DataColumn()
+{
+	this->type = "none"; 
+	this->title = "none"; 
+	this->index = 0; 
+}
 
 DataColumn::DataColumn(string type, string title, int index) {
 	this->type = type;

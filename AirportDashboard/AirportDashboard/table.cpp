@@ -303,7 +303,7 @@ void Table::UpdateCsv(string filename, vector<string> colvals, int row_idx)
 	string inputLine;
 
 	//column names stored in file records vector
-	for (int i = 0;i < columns.size();i++)
+	for (int i = 0; i < columns.size(); i++)
 	{
 		inputLine += columns.at(i).GetTitle();
 		inputLine += ",";
@@ -333,10 +333,12 @@ void Table::UpdateCsv(string filename, vector<string> colvals, int row_idx)
 		//updated record values stored in file records vector
 		if (counter == row_idx)
 		{
+			//Get the current line
+			getline(fin, inputLine);
 			inputLine = "";
-			for (int i = 0;i < colvals.size();i++)
+			for (int i = 0; i < colvals.size(); i++)
 			{
-				inputLine += records.at(i);
+				inputLine += colvals.at(i);
 				inputLine += ",";
 			}
 			inputLine = inputLine.substr(0, inputLine.find_last_of(","));
@@ -352,14 +354,38 @@ void Table::UpdateCsv(string filename, vector<string> colvals, int row_idx)
 			break;
 		}
 
-		records.push_back(inputLine);
+		if (counter > 0)
+		{
+			records.push_back(inputLine);
+		}
+		counter++;
 
 	} while (inputLine != "");
 
-	for (int k = 0;k < records.size();k++)
+	fin.close();
+
+	//Attempt tp open the file;
+	fout.open(filename, ios::out);
+
+	//If file fails to load, prompt again until proper file given
+	if (fout.fail())
+	{
+		while (fout.fail())
+		{
+			std::cout << "Error in opening fin while updating record." << std::endl;
+			std::cout << "Try again.\n";
+
+			std::cin >> filename;
+			fout.open(filename);
+		}
+	}
+
+	for (int k = 0; k < records.size(); k++)
 	{
 		fout << records.at(k) << endl;
 	}
+
+	fout.close();
 }
 
 void Table::WriteToCsv(string filename, vector<string> colvals)
@@ -693,7 +719,7 @@ void Table::SELECT(string values, string table)
 
 void Table::DELETE(string inputLine, string table)
 {
-	cout << "Before: \n" << endl; 
+	//cout << "Before: \n" << endl; 
 	PrintTable(); 
 
 	string values = inputLine.substr(inputLine.find("(") + 2, inputLine.find_last_of(",") - inputLine.find("(") - 3);

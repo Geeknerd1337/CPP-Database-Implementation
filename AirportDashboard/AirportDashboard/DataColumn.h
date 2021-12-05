@@ -18,6 +18,7 @@ public:
 	/// <param name="type"></param>
 	/// <param name="title"></param>
 	/// <param name="index"></param>
+	DataColumn(); 
 	DataColumn(string type, string title, int index);
 
 	void SetIndex(int index);
